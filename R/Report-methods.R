@@ -308,10 +308,13 @@ setMethod("initialize", "Report",
 				stop(paste("directory", dname, "cannot be created"))
 			}
 			## Copy configuration files
-			cfiles <- c("arrow_down.png", "arrow_right.png", "muReportR.png", "pdf_active.png", "pdf_inactive.png",
-				"report.css", "report.js")
-			cfiles <- system.file(file.path("extdata", cfiles), package = "muReportR", mustWork = TRUE)
-			if (!all(file.copy(cfiles, dname))) {
+			cfiles <- list.files(system.file(file.path("extdata", "reportFiles"), package = "muReportR", mustWork = TRUE))
+			cfiles <- system.file(file.path("extdata", "reportFiles", cfiles), package = "muReportR", mustWork = TRUE)
+			copySuccess <- all(file.copy(cfiles, dname))
+			logo <- system.file(file.path("extdata", "reportFiles", "logo.png"), package = "muReportR", mustWork = TRUE)
+			copySuccess <- copySuccess && file.copy(logo, file.path(dname, "logo.png"))
+
+			if (!copySuccess) {
 				stop(paste("configuration could not be initialized in", dname))
 			}
 			rm(dname, cfiles)
@@ -337,6 +340,7 @@ setMethod("initialize", "Report",
 		wline(c("<script src=\"", dir.configuration, "report.js\" type=\"text/javascript\"></script>"), 1)
 		wline("</head>\n")
 		wline(c("<body style=\"background:url(", dir.configuration, "logo.png) no-repeat 5px 25px;\">\n"))
+		wline(c("<br />")) #whitespace
 		wline(c("<h1>", title, "</h1>\n"))
 		.Object
 	}
