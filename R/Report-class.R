@@ -29,14 +29,14 @@
 #'
 #' @section Methods and Functions:
 #' \describe{
-#'   \item{\code{\link{rnb.get.directory}}}{Gets the location of a given report-specific directory.}
-#'   \item{\code{\link{rnb.add.section}}}{Generates HTML code for a new section in the report.}
-#'   \item{\code{\link{rnb.add.paragraph}}}{Generates HTML code for a new paragraph in the report.}
-#'   \item{\code{\link{rnb.add.list}}}{Generates HTML code for a list in the report.}
-#'   \item{\code{\link{rnb.add.table}}}{Generates HTML code for a table in the report.}
-#'   \item{\code{\link{rnb.add.tables}}}{Generates HTML code for a listing of tables in the report.}
-#'   \item{\code{\link{rnb.add.figure}}}{Generates HTML code for a figure in the report.}
-#'   \item{\code{\link{rnb.add.reference}}}{Adds a reference item to the report.}
+#'   \item{\code{\link{getReportDir}}}{Gets the location of a given report-specific directory.}
+#'   \item{\code{\link{addReportSection}}}{Generates HTML code for a new section in the report.}
+#'   \item{\code{\link{addReportParagraph}}}{Generates HTML code for a new paragraph in the report.}
+#'   \item{\code{\link{addReportList}}}{Generates HTML code for a list in the report.}
+#'   \item{\code{\link{addReportTable}}}{Generates HTML code for a table in the report.}
+#'   \item{\code{\link{addReportTables}}}{Generates HTML code for a listing of tables in the report.}
+#'   \item{\code{\link{addReportFigure}}}{Generates HTML code for a figure in the report.}
+#'   \item{\code{\link{addReportReference}}}{Adds a reference item to the report.}
 #'   \item{\code{\link[=off,Report-method]{off}}}{Completes the HTML report by adding a reference section (if needed),
 #'        a footer notice and closing the \code{<body>} and \code{<html>} tags.}
 #' }
@@ -69,4 +69,4 @@ setClass("Report",
 		figures = 0L,
 		tables = 0L,
 		references = character()),
-	package = "RnBeads")
+	package = "muReportR")

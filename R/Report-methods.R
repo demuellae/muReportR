@@ -81,10 +81,10 @@ complete.report <- function(report, report.type = "report") {
 
 	## Add list of references to the report
 	if (length(report@references) != 0) {
-		report <- rnb.add.section(report, "References", NULL)
+		report <- addReportSection(report, "References", NULL)
 		reftexts <- report@references
 		reftexts <- paste0("<a id=\"ref", 1:length(reftexts), "\">", reftexts, "</a>")
-		rnb.add.list(report, as.list(reftexts), type = "o")
+		addReportList(report, as.list(reftexts), type = "o")
 	}
 
 	## Close any open sub-sections and sections
@@ -97,10 +97,10 @@ complete.report <- function(report, report.type = "report") {
 
 	## Add footer to the report
 	write.line("\n<div id=\"copyright\">", report@fname)
-	write.line("\t<div id=\"rnbeads\">", report@fname)
+	write.line("\t<div id=\"muReportR\">", report@fname)
 	write.line(c("\tThis ", report.type, " was generated on ", format(Sys.time(), "%Y-%m-%d"), " by ",
-			"<a href=\"http://rnbeads.org/\">RnBeads</a> version ",
-			paste(as.character(utils::packageVersion("RnBeads")), collapse = "."), "."), report@fname)
+			"<a href=\"http://muReportR.org/\">muReportR</a> version ",
+			paste(as.character(utils::packageVersion("muReportR")), collapse = "."), "."), report@fname)
 	write.line("\t</div>", report@fname)
 	write.line("\t<div id=\"validlogo\">", report@fname)
 	write.line(c("\t\t<a href=\"http://validator.w3.org/check?uri=referer\">",
@@ -122,7 +122,7 @@ complete.report <- function(report, report.type = "report") {
 
 setMethod("show", "Report",
 	function(object) {
-		cat("Object of class Report - an XHTML Report in RnBeads\n")
+		cat("Object of class Report - an XHTML Report in muReportR\n")
 		infotext <- c("Report's file" = object@fname,
 			"Directory for configuration files" = object@dir.conf,
 			"Directory for data files" = object@dir.data,
@@ -139,14 +139,14 @@ setMethod("show", "Report",
 
 ########################################################################################################################
 
-#' rnb.initialize.reports
+#' initializeReports
 #'
 #' Creates a new directory to host HTML reports and copies the shared configuration files.
 #'
-#' @param dir.reports       Directory to host report files. This must be a \code{character} of length one that specifies
+#' @param reportDir       Directory to host report files. This must be a \code{character} of length one that specifies
 #'                          a non-existent path, as this methods attempts to create it.
-#' @param dir.configuration Subdirectory to host configuration files shared by the reports. This must be a
-#'                          \code{character} of length one that gives location as a path relative to \code{dir.reports}.
+#' @param configDir Subdirectory to host configuration files shared by the reports. This must be a
+#'                          \code{character} of length one that gives location as a path relative to \code{reportDir}.
 #'                          Also, strong restrictions apply to the path name. See the description of the
 #'                          \code{\link{createReport}} function for more details. This method creates the directory and
 #'                          copies configuration files that define cascading style sheet (CSS) definitions and
@@ -156,41 +156,42 @@ setMethod("show", "Report",
 #'
 #' @examples
 #' \donttest{
-#' dir.reports <- "~/infinium_studies/cancer_study/reports"
-#' if (!rnb.initialize.reports(dir.reports)) {
-#'     cat("ERROR: Could not initialize configuration in ", dir.reports, "\n", sep = "")
+#' reportDir <- "~/infinium_studies/cancer_study/reports"
+#' if (!initializeReports(reportDir)) {
+#'     cat("ERROR: Could not initialize configuration in ", reportDir, "\n", sep = "")
 #' }
 #' }
 #'
 #' @seealso \code{\link{createReport}} for initializing an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.initialize.reports <- function(dir.reports, dir.configuration = "configuration") {
-	if (!(is.character(dir.reports) && length(dir.reports) == 1 && (!is.na(dir.reports[1])))) {
-		stop("invalid value for dir.reports")
+initializeReports <- function(reportDir, configDir = "_config", logo=system.file(file.path("extdata", "logo.png"), package = "muReportR", mustWork = TRUE)) {
+	if (!(is.character(reportDir) && length(reportDir) == 1 && (!is.na(reportDir[1])))) {
+		stop("invalid value for reportDir")
 	}
-	if (!(is.character(dir.configuration) && length(dir.configuration) == 1 && (!is.na(dir.configuration[1])))) {
-		stop("invalid value for dir.configuration")
+	if (!(is.character(configDir) && length(configDir) == 1 && (!is.na(configDir[1])))) {
+		stop("invalid value for configDir")
 	}
-	if (!is.valid.relative(dir.configuration)) {
-		stop("invalid value for dir.configuration")
+	if (!is.valid.relative(configDir)) {
+		stop("invalid value for configDir")
 	}
-	## Remove trailing slash or backslash in dir.reports (if it exists)
-	dir.reports <- sub("^(.+)[/\\\\]$", "\\1", dir.reports[1])
-	## Attempt to create dir.reports
-	if (!create.path(dir.reports, FALSE, showWarnings = FALSE)) {
+	## Remove trailing slash or backslash in reportDir (if it exists)
+	reportDir <- sub("^(.+)[/\\\\]$", "\\1", reportDir[1])
+	## Attempt to create reportDir
+	if (!create.path(reportDir, FALSE, showWarnings = FALSE)) {
 		return(FALSE)
 	}
-	## Attempt to create dir.configuration
-	dname <- normalizePath(file.path(dir.reports, dir.configuration), mustWork = FALSE)
+	## Attempt to create configDir
+	dname <- normalizePath(file.path(reportDir, configDir), mustWork = FALSE)
 	if (!create.path(dname, showWarnings = FALSE)) {
 		return(FALSE)
 	}
 	## Copy configuration files
-	cfiles <- c("arrow_down.png", "arrow_right.png", "RnBeads.png", "pdf_active.png", "pdf_inactive.png", "report.css",
-		"report.js")
-	cfiles <- system.file(file.path("extdata", cfiles), package = "RnBeads", mustWork = TRUE)
-	return(all(file.copy(cfiles, dname)))
+	cfiles <- list.files(system.file(file.path("extdata", "reportFiles"), package = "muReportR", mustWork = TRUE))
+	cfiles <- system.file(file.path("extdata", cfiles), package = "muReportR", mustWork = TRUE)
+	res <- all(file.copy(cfiles, dname))
+	res <- res && file.copy(logo, file.path(dname, "logo.png"))
+	return()
 }
 
 ## M E T H O D S #######################################################################################################
@@ -307,9 +308,9 @@ setMethod("initialize", "Report",
 				stop(paste("directory", dname, "cannot be created"))
 			}
 			## Copy configuration files
-			cfiles <- c("arrow_down.png", "arrow_right.png", "RnBeads.png", "pdf_active.png", "pdf_inactive.png",
+			cfiles <- c("arrow_down.png", "arrow_right.png", "muReportR.png", "pdf_active.png", "pdf_inactive.png",
 				"report.css", "report.js")
-			cfiles <- system.file(file.path("extdata", cfiles), package = "RnBeads", mustWork = TRUE)
+			cfiles <- system.file(file.path("extdata", cfiles), package = "muReportR", mustWork = TRUE)
 			if (!all(file.copy(cfiles, dname))) {
 				stop(paste("configuration could not be initialized in", dname))
 			}
@@ -335,7 +336,7 @@ setMethod("initialize", "Report",
 		}
 		wline(c("<script src=\"", dir.configuration, "report.js\" type=\"text/javascript\"></script>"), 1)
 		wline("</head>\n")
-		wline(c("<body style=\"background:url(", dir.configuration, "RnBeads.png) no-repeat 5px 25px;\">\n"))
+		wline(c("<body style=\"background:url(", dir.configuration, "logo.png) no-repeat 5px 25px;\">\n"))
 		wline(c("<h1>", title, "</h1>\n"))
 		.Object
 	}
@@ -343,12 +344,12 @@ setMethod("initialize", "Report",
 
 ########################################################################################################################
 
-#' rnb.get.directory
+#' getReportDir
 #'
 #' Gets the location of the given report-specific directory.
 #'
 #' @param report   Report of interest.
-#' @param dir      Type of directory to get. Must be one of \code{"data"}, \code{"images"}, \code{"images-high"} or
+#' @param dir      Type of directory to get. Must be one of \code{"data"}, \code{"images"}, \code{"images_highres"} or
 #'                 \code{"pdfs"}.
 #' @param absolute Flag indicating if the absolute path of the directory is to be returned. If this is \code{FALSE},
 #'                 the directory name is returned relative to the report's HTML file location.
@@ -357,16 +358,16 @@ setMethod("initialize", "Report",
 #' @examples
 #' \donttest{
 #' report <- createReport("example.html", "Example", init.configuration = TRUE)
-#' rnb.get.directory(report, "data")
+#' getReportDir(report, "data")
 #' }
 #' @seealso \code{\linkS4class{Report}} for functions adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.get.directory <- function(report, dir = c("data", "images", "images-high", "pdfs"), absolute = FALSE) {
+getReportDir <- function(report, dir = c("data", "images", "images_highres", "pdfs"), absolute = FALSE) {
 	if (!inherits(report, "Report")) {
 		stop("invalid value for report")
 	}
-	if (is.null(dir) || length(dir) == 0 || (!(dir[1] %in% c("data", "images", "images-high", "pdfs")))) {
+	if (is.null(dir) || length(dir) == 0 || (!(dir[1] %in% c("data", "images", "images_highres", "pdfs")))) {
 		stop("invalid value for dir")
 	}
 	if (!parameter.is.flag(absolute)) {
@@ -379,7 +380,7 @@ rnb.get.directory <- function(report, dir = c("data", "images", "images-high", "
 		result <- report@dir.pdfs
 	} else if (dir == "images") {
 		result <- report@dir.pngs
-	} else { # dir == "images-high"
+	} else { # dir == "images_highres"
 		result <- report@dir.high
 	}
 	if (absolute) {
@@ -390,7 +391,7 @@ rnb.get.directory <- function(report, dir = c("data", "images", "images-high", "
 
 ########################################################################################################################
 
-#' rnb.add.section
+#' addReportSection
 #'
 #' Generates HTML code for a new section in the specified report.
 #'
@@ -409,12 +410,12 @@ rnb.get.directory <- function(report, dir = c("data", "images", "images-high", "
 #' @examples
 #' \donttest{
 #' report <- createReport("example.html", "Example", init.configuration = TRUE)
-#' report <- rnb.add.section(report, "Introduction", "This is how it's done.")
+#' report <- addReportSection(report, "Introduction", "This is how it's done.")
 #' }
 #' @seealso \code{\linkS4class{Report}} for other functions adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.add.section <- function(report, title, description, level = 1L, collapsed = FALSE) {
+addReportSection <- function(report, title, description, level = 1L, collapsed = FALSE) {
 	if (!inherits(report, "Report")) {
 		stop("invalid value for report")
 	}
@@ -469,14 +470,14 @@ rnb.add.section <- function(report, title, description, level = 1L, collapsed = 
 
 ########################################################################################################################
 
-#' rnb.add.paragraph
+#' addReportParagraph
 #'
 #' Generates HTML code for a new paragraph in the specified report.
 #'
 #' @param report          Report to write the text to.
 #' @param txt             \code{character} vector (or array) storing the text to be written. The elements of this vector
 #'                        are concatenated without a separator.
-#' @param paragraph.class CSS class definition of the paragraph. This must be either \code{NULL} (default) or one of:
+#' @param pClass          CSS class definition of the paragraph. This must be either \code{NULL} (default) or one of:
 #'                        \describe{
 #'                          \item{\code{"centered"}}{This paragraph gives a formula or a short statement. Text is
 #'                               horizontally centered.}
@@ -490,37 +491,37 @@ rnb.add.section <- function(report, title, description, level = 1L, collapsed = 
 #' report <- createReport("example.html", "Example", init.configuration = TRUE)
 #' txt <- "A pessimist is a person who has had to listen to too many optimists."
 #' txt <- c(txt, " <i>Don Marquis</i>")
-#' rnb.add.paragraph(report, txt)
+#' addReportParagraph(report, txt)
 #' }
 #' @seealso \code{\linkS4class{Report}} for other functions adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.add.paragraph <- function(report, txt, paragraph.class = NULL) {
+addReportParagraph <- function(report, txt, pClass = NULL) {
 	if (!inherits(report, "Report")) {
 		stop("invalid value for report")
 	}
 	if (!is.character(txt)) {
 		stop("invalid value for txt; expected character vector")
 	}
-	if (is.null(paragraph.class)) {
-		paragraph.class <- ""
+	if (is.null(pClass)) {
+		pClass <- ""
 	} else {
-		if (!(is.character(paragraph.class) && length(paragraph.class) == 1 && (!is.na(paragraph.class)))) {
-			stop("invalid value for paragraph.class; expected single character")
+		if (!(is.character(pClass) && length(pClass) == 1 && (!is.na(pClass)))) {
+			stop("invalid value for pClass; expected single character")
 		}
-		paragraph.class <- paragraph.class[1]
-		if (!(paragraph.class %in% c("centered", "note", "task"))) {
-			stop("invalid value for paragraph.class; expected one of centered, note, task")
+		pClass <- pClass[1]
+		if (!(pClass %in% c("centered", "note", "task"))) {
+			stop("invalid value for pClass; expected one of centered, note, task")
 		}
-		paragraph.class <- paste(" class=", paragraph.class, "", sep = "\"")
+		pClass <- paste(" class=", pClass, "", sep = "\"")
 	}
-	write.line(c("<p", paragraph.class, ">", txt, "</p>"), report@fname)
+	write.line(c("<p", pClass, ">", txt, "</p>"), report@fname)
 	return(invisible(report))
 }
 
 ########################################################################################################################
 
-#' rnb.add.list
+#' addReportList
 #'
 #' Generates HTML code for a list in the specified report.
 #'
@@ -548,12 +549,12 @@ rnb.add.paragraph <- function(report, txt, paragraph.class = NULL) {
 #' \donttest{
 #' report <- createReport("example.html", "Example", init.configuration = TRUE)
 #' recipe <- list("Sift flour in a bowl", "Add sugar and mix", "Add milk and mix")
-#' rnb.add.list(report, recipe, type="o")
+#' addReportList(report, recipe, type="o")
 #' }
 #' @seealso \code{\linkS4class{Report}} for other functions adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.add.list <- function(report, txt, type = "u") {
+addReportList <- function(report, txt, type = "u") {
 	if (!inherits(report, "Report")) {
 		stop("invalid value for report")
 	}
@@ -594,7 +595,7 @@ rnb.add.list <- function(report, txt, type = "u") {
 
 ########################################################################################################################
 
-#' rnb.add.table
+#' addReportTable
 #'
 #' Generates HTML code for a table in the specified report.
 #'
@@ -622,11 +623,11 @@ rnb.add.list <- function(report, txt, type = "u") {
 #'                         not considered when printing \code{thead} or the table's column names.
 #' @return The modified report, invisibly.
 #'
-#' @seealso \code{\link{rnb.add.tables}} for adding a listing of tables; \code{\linkS4class{Report}} for other functions
+#' @seealso \code{\link{addReportTables}} for adding a listing of tables; \code{\linkS4class{Report}} for other functions
 #'   adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.add.table <- function(report, tdata, row.names = TRUE, first.col.header = FALSE, indent = 0,
+addReportTable <- function(report, tdata, row.names = TRUE, first.col.header = FALSE, indent = 0,
 	tag.attrs = c("class" = "tabdata"), thead = NULL, tcaption = NULL, na = "<span class=\"disabled\">n/a</span>") {
 
 	if (!inherits(report, "Report")) {
@@ -728,7 +729,7 @@ rnb.add.table <- function(report, tdata, row.names = TRUE, first.col.header = FA
 
 ########################################################################################################################
 
-#' rnbreport.get.element.values
+#' getReportElementValues
 #'
 #' @param elements       Observed values of element names, in the form of a \code{list} of \code{character} vectors of
 #'                       equal length. The <i>i</i>-th element of this list should be extracted from the <i>i</i>-th
@@ -740,7 +741,7 @@ rnb.add.table <- function(report, tdata, row.names = TRUE, first.col.header = FA
 #'         \code{character} containing an error message.
 #' @author Yassen Assenov
 #' @noRd
-rnbreport.get.element.values <- function(elements, settings.count) {
+getReportElementValues <- function(elements, settings.count) {
 	element.count <- range(sapply(elements, length))
 	if (element.count[1] != element.count[2]) {
 		return(NULL)
@@ -760,14 +761,14 @@ rnbreport.get.element.values <- function(elements, settings.count) {
 
 ########################################################################################################################
 
-#' rnbreport.create.settings.table
+#' createReportSettingsTable
 #'
 #' Creates the HTML code for a table of selecting settings. This is used in figures and in listings of tables.
 #'
 #' @param type              One of \code{"fig"} or \code{"tab"}.
 #' @param n                 Index of figure or table listing in the report.
 #' @param element.values    List of all observed values for each element in the identifiers. This is extracted by
-#'                          \code{\link{rnbreport.get.element.values}}.
+#'                          \code{\link{getReportElementValues}}.
 #' @param setting.names     List of element descriptors, as provided to the calling function.
 #' @param selected.elements Element values that should be initially selected.
 #' @param indent            Indentation, in number of tabulation characters, of the <table> tag.
@@ -775,7 +776,7 @@ rnbreport.get.element.values <- function(elements, settings.count) {
 #'         \code{setting.names} is incomplete, that is, not all provided \code{element.values} have descriptions.
 #' @author Yassen Assenov
 #' @noRd
-rnbreport.create.settings.table <- function(type, n, element.values, setting.names, selected.elements, indent = 1L) {
+createReportSettingsTable <- function(type, n, element.values, setting.names, selected.elements, indent = 1L) {
 	updatefun <- ifelse(type == "fig", "updateFigure", "updateTable")
 	result <- character()
 	wline <- function(txt, ind = 0L) {
@@ -820,7 +821,7 @@ rnbreport.create.settings.table <- function(type, n, element.values, setting.nam
 
 ########################################################################################################################
 
-#' rnb.add.tables
+#' addReportTables
 #'
 #' Generates HTML code for a listing of tables (of which only one is visible at any moment) in the specified report.
 #'
@@ -832,14 +833,14 @@ rnbreport.create.settings.table <- function(type, n, element.values, setting.nam
 #'                       included in this list.
 #' @param selected.table Index of the table to be initially selected in this listing.
 #' @param indent         Default indentation, in number of tabulation characters, to apply to every table.
-#' @param ...            Other parameters passed to \code{\link{rnb.add.table}}.
+#' @param ...            Other parameters passed to \code{\link{addReportTable}}.
 #' @return The modified report.
 #'
-#' @seealso \code{\link{rnb.add.table}} for adding a single table to a report; \code{\linkS4class{Report}} for other
+#' @seealso \code{\link{addReportTable}} for adding a single table to a report; \code{\linkS4class{Report}} for other
 #'   functions adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.add.tables <- function(report, tables, setting.names, selected.table = 1L, indent = 2L, ...) {
+addReportTables <- function(report, tables, setting.names, selected.table = 1L, indent = 2L, ...) {
 	
 	if (!inherits(report, "Report")) {
 		stop("invalid value for report")
@@ -863,7 +864,7 @@ rnb.add.tables <- function(report, tables, setting.names, selected.table = 1L, i
 
 	## Identify name elements
 	elements <- strsplit(names(tables), "_", fixed = TRUE)
-	element.values <- rnbreport.get.element.values(elements, length(setting.names))
+	element.values <- getReportElementValues(elements, length(setting.names))
 	if (is.null(element.values)) {
 		stop("inconsistent table names")
 	}
@@ -879,7 +880,7 @@ rnb.add.tables <- function(report, tables, setting.names, selected.table = 1L, i
 	## Create a table of settings
 	wline(c("<div class=\"figure\" id=\"tab", n, "figure\">"), 0)
 	if (length(setting.names) != 0) {
-		txt <- rnbreport.create.settings.table("tab", n, element.values, setting.names, elements[[selected.table]])
+		txt <- createReportSettingsTable("tab", n, element.values, setting.names, elements[[selected.table]])
 		if (is.null(txt)) {
 			stop("missing plot file element descriptors")
 		}
@@ -890,7 +891,7 @@ rnb.add.tables <- function(report, tables, setting.names, selected.table = 1L, i
 	for (i in 1:length(tables)) {
 		txt <- c(" style=\"display:", ifelse(i == selected.table, "block", "none"), "\"")
 		wline(c("<div id=\"tab", n, "_", names(tables)[i], "\"", txt, ">"), 1)
-		rnb.add.table(report, tables[[i]], indent = indent, ...)
+		addReportTable(report, tables[[i]], indent = indent, ...)
 		wline("</div>\n", 1)
 	}
 
@@ -901,7 +902,7 @@ rnb.add.tables <- function(report, tables, setting.names, selected.table = 1L, i
 
 ########################################################################################################################
 
-#' rnb.add.figure
+#' addReportFigure
 #'
 #' Generates HTML code for a figure in the specified report. A figure is a collection of images (plots), of which only
 #' one is visible at any given moment.
@@ -909,18 +910,18 @@ rnb.add.tables <- function(report, tables, setting.names, selected.table = 1L, i
 #' @param report         Report to write the text to.
 #' @param description    Human-readable description of the figure. This must be a non-empty \code{character} vector. The
 #'                       elements of this vector are concatenated without a separator to form the full description.
-#' @param report.plots   Object of type \code{\linkS4class{ReportPlot}}, or a list of such objects.
+#' @param repPlots   Object of type \code{\linkS4class{ReportPlot}}, or a list of such objects.
 #' @param setting.names  List of plot file element descriptors. Every variable elements in the plot file names must be
 #'                       included in this list. Set this to empty list if no variable elements are present, that is, if
 #'                       the figure should present a single report plot.
 #' @param selected.image Index of plot to be initially selected in the figure.
 #' @return The modified report.
 #'
-#' @seealso \code{\link{rnb.add.tables}} for adding a listing of tables; \code{\linkS4class{Report}} for other functions
+#' @seealso \code{\link{addReportTables}} for adding a listing of tables; \code{\linkS4class{Report}} for other functions
 #'   adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.add.figure <- function(report, description, report.plots, setting.names = list(), selected.image = as.integer(1)) {
+addReportFigure <- function(report, description, repPlots, setting.names = list(), selected.image = as.integer(1)) {
 
 	if (!inherits(report, "Report")) {
 		stop("invalid value for report")
@@ -928,11 +929,11 @@ rnb.add.figure <- function(report, description, report.plots, setting.names = li
 	if (!(is.character(description) && length(description) != 0)) {
 		stop("invalid value for description")
 	}
-	if (inherits(report.plots, "ReportPlot")) {
-		report.plots <- list(report.plots)
+	if (inherits(repPlots, "ReportPlot")) {
+		repPlots <- list(repPlots)
 	}
-	if (!(is.list(report.plots) && length(report.plots) != 0 && all(sapply(report.plots, inherits, "ReportPlot")))) {
-		stop("invalid value for report.plots")
+	if (!(is.list(repPlots) && length(repPlots) != 0 && all(sapply(repPlots, inherits, "ReportPlot")))) {
+		stop("invalid value for repPlots")
 	}
 	if (!(is.list(setting.names) && all(sapply(setting.names, is.vector)))) {
 		stop("invalid value for setting.names")
@@ -943,7 +944,7 @@ rnb.add.figure <- function(report, description, report.plots, setting.names = li
 	if (!is.integer(selected.image) && length(selected.image) == 1 && (!is.na(selected.image))) {
 		stop("invalid value for selected.image")
 	}
-	if (selected.image < 1 || length(report.plots) < selected.image) {
+	if (selected.image < 1 || length(repPlots) < selected.image) {
 		stop("invalid value for selected.image")
 	}
 
@@ -951,28 +952,28 @@ rnb.add.figure <- function(report, description, report.plots, setting.names = li
 	PLOT.IMAGE.WIDTH.MAX <- 850  ## maximum visible width, in pixels, of a figure plot image
 	PLOT.IMAGE.HEIGHT.MAX <- 850 ## maximum visible height, in pixels, of a figure plot image
 
-	iheight <- range(sapply(report.plots, slot, "height"))
-	iwidth <- range(sapply(report.plots, slot, "width"))
-	ilow <- range(sapply(report.plots, slot, "low.png"))
+	iheight <- range(sapply(repPlots, slot, "height"))
+	iwidth <- range(sapply(repPlots, slot, "width"))
+	ilow <- range(sapply(repPlots, slot, "low.png"))
 	if (iheight[1] != iheight[2] || iwidth[1] != iwidth[2] || ilow[1] != ilow[2]) {
 		stop("inconsistent image sizes")
 	}
 	iheight <- iheight[1] * ilow[1]
 	iwidth <- iwidth[1] * ilow[1]
 	pdfs <- NULL
-	if (all(sapply(report.plots, slot, "create.pdf"))) {
-		pdfs <- unique(sapply(report.plots, slot, "dir.pdf"))
+	if (all(sapply(repPlots, slot, "create.pdf"))) {
+		pdfs <- unique(sapply(repPlots, slot, "dir.pdf"))
 		if (length(pdfs) != 1) {
 			pdfs <- NULL # inconsistent directory to store the PDF files; do not create a link
 		}
 	}
-	ihigh <- range(sapply(report.plots, slot, "high.png"))
+	ihigh <- range(sapply(repPlots, slot, "high.png"))
 	ihigh <- ifelse(ihigh[1] == ihigh[2] && ihigh[1] > 0, ihigh[1], 0L)
 
 	## Get the file name elements
-	fnames <- sapply(report.plots, slot, "fname")
+	fnames <- sapply(repPlots, slot, "fname")
 	felements <- strsplit(fnames, "_", fixed = TRUE)
-	element.values <- rnbreport.get.element.values(felements, length(setting.names))
+	element.values <- getReportElementValues(felements, length(setting.names))
 	if (is.null(element.values)) {
 		stop("inconsistent figure file names")
 	}
@@ -987,7 +988,7 @@ rnb.add.figure <- function(report, description, report.plots, setting.names = li
 
 	## Create a table of settings if necessary
 	if (length(setting.names) != 0) {
-		txt <- rnbreport.create.settings.table("fig", fn, element.values, setting.names, felements[[selected.image]])
+		txt <- createReportSettingsTable("fig", fn, element.values, setting.names, felements[[selected.image]])
 		if (is.null(txt)) {
 			stop("missing plot file element descriptors")
 		}
@@ -1005,7 +1006,7 @@ rnb.add.figure <- function(report, description, report.plots, setting.names = li
 		"\" width=\"", iwidth, "\" />")
 	if (ihigh != 0) {
 		## Add link to a high-resolution image
-		fimage.high <- ifelse(report@dir.high == report@dir.pngs, "_high_resolution", "")
+		fimage.high <- ifelse(report@dir.high == report@dir.pngs, "_highres", "")
 		fimage.high <- paste0(report@dir.high, "/", fnames[selected.image], fimage.high, ".png")
 		txt <- paste0("<a href=\"", fimage.high, "\" id=\"fig", fn, "imagehigh\">", txt, "</a>")
 	}
@@ -1042,7 +1043,7 @@ rnb.add.figure <- function(report, description, report.plots, setting.names = li
 
 ########################################################################################################################
 
-#' rnb.add.reference
+#' addReportReference
 #'
 #' Adds a reference item to the given report.
 #'
@@ -1055,15 +1056,15 @@ rnb.add.figure <- function(report, description, report.plots, setting.names = li
 #' \donttest{
 #' report <- createReport("example.html", "Example", init.configuration = TRUE)
 #' txt.reference <- c("Bird A. ", "<i>Nucleic Acids Res.</i> <b>8</b> (1980)")
-#' report <- rnb.add.reference(report, txt.reference)
-#' txt <- c("This was shown in ", rnb.get.reference(report, txt.reference), ".")
-#' rnb.add.paragraph(report, txt)
+#' report <- addReportReference(report, txt.reference)
+#' txt <- c("This was shown in ", getReportReference(report, txt.reference), ".")
+#' addReportParagraph(report, txt)
 #' }
-#' @seealso \code{\link{rnb.get.reference}} for adding citations in the report's text; \code{\linkS4class{Report}} for
+#' @seealso \code{\link{getReportReference}} for adding citations in the report's text; \code{\linkS4class{Report}} for
 #'   other functions adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.add.reference <- function(report, txt) {
+addReportReference <- function(report, txt) {
 	if (!inherits(report, "Report")) {
 		stop("invalid value for report")
 	}
@@ -1076,7 +1077,7 @@ rnb.add.reference <- function(report, txt) {
 	
 ########################################################################################################################
 
-#' rnb.get.reference
+#' getReportReference
 #'
 #' Creates a string that points to the given reference item in the specified report.
 #'
@@ -1090,15 +1091,15 @@ rnb.add.reference <- function(report, txt) {
 #' \donttest{
 #' report <- createReport("example.html", "Example", init.configuration = TRUE)
 #' txt.reference <- c("Bird A. ", "<i>Nucleic Acids Res.</i> <b>8</b> (1980)")
-#' report <- rnb.add.reference(report, txt.reference)
-#' txt <- c("This was shown in ", rnb.get.reference(report, txt.reference), ".")
-#' rnb.add.paragraph(report, txt)
+#' report <- addReportReference(report, txt.reference)
+#' txt <- c("This was shown in ", getReportReference(report, txt.reference), ".")
+#' addReportParagraph(report, txt)
 #' }
-#' @seealso \code{\link{rnb.add.reference}} for adding a reference item to a report; \code{\linkS4class{Report}} for
+#' @seealso \code{\link{addReportReference}} for adding a reference item to a report; \code{\linkS4class{Report}} for
 #'   other functions adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-rnb.get.reference <- function(report, txt) {
+getReportReference <- function(report, txt) {
 	if (!inherits(report, "Report")) {
 		stop("invalid value for report")
 	}
@@ -1170,7 +1171,7 @@ setMethod("off", "Report",
 #'                           that define cascading style sheet (CSS) definitions and Javascript functions used by the
 #'                           HTML report. If such configuration files already exist, they will be overwritten. Since the
 #'                           aforementioned files can be shared by multiple reports, it is recommended that the
-#'                           configuration is initialized using the method \code{\link{rnb.initialize.reports}}, instead
+#'                           configuration is initialized using the method \code{\link{initializeReports}}, instead
 #'                           of setting this flag to \code{TRUE}.
 #' @return Newly created \code{\linkS4class{Report}} object.
 #'
@@ -1192,7 +1193,7 @@ setMethod("off", "Report",
 #' }
 #' Any other elements, if present, are ignored. Note that these directories are not required to point to different
 #' locations. In particular, if the directories for low and for high resolution images are identical, the
-#' high-resolution image files are assumed to be the ones with suffix \code{"_high_resolution.png"}. See
+#' high-resolution image files are assumed to be the ones with suffix \code{"_highres.png"}. See
 #' \code{\link{createReportPlot}} for creating image files.
 #' In order to ensure independence of the operating system, there are strong restrictions on the names of the file and
 #' directories. The name of the report's HTML file can consist of the following symbols only: Latin letters, digits, dot
@@ -1215,7 +1216,7 @@ setMethod("off", "Report",
 #' @seealso \code{\linkS4class{Report}} for functions adding contents to an HTML report
 #' @author Yassen Assenov
 #' @export
-createReport <- function(fname, title, page.title = "RnBeads report", authors = NULL, dirs = NULL, init.configuration = FALSE) {
+createReport <- function(fname, title, page.title = "muReportR report", authors = NULL, dirs = NULL, init.configuration = FALSE) {
 	if (!(is.character(fname) && length(fname) == 1 && (!is.na(fname[1])))) {
 		stop("invalid value for fname")
 	}
