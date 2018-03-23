@@ -122,11 +122,7 @@ setMethod("off", "ReportPlot",
 			doerror <- function(e) {
 				dev.off()
 				em <- paste("Could not create file.", e$message)
-				if (logger.isinitialized()) {
-					logger.error(em)
-				} else {
-					stop(em)
-				}
+				stop(em)
 			}
 
 			tryCatch(
@@ -135,8 +131,6 @@ setMethod("off", "ReportPlot",
 				warning = function(e) {
 					if (grepl(" had status 1$", e$message)) {
 						doerror(e)
-					} else if (logger.isinitialized()) {
-						logger.warning(e$message)
 					} else {
 						invisible(e$message)
 					}
@@ -322,8 +316,8 @@ setMethod("off", "ReportGgPlot",
 			tryCatch(
 				do.it(.Object),
 				error=function(ee){
-					logger.warning(c("ReportGgPlot error ('off' method):",ee$message))
-					.Object@ggp <<- rnb.message.plot("plotting error")
+					warning(paste("ReportGgPlot error ('off' method):",ee$message))
+					.Object@ggp <<- ggMsgPlot("plotting error")
 					do.it(.Object)
 				}
 			)

@@ -99,7 +99,7 @@ complete.report <- function(report, report.type = "report") {
 	write.line("\n<div id=\"copyright\">", report@fname)
 	write.line("\t<div id=\"muReportR\">", report@fname)
 	write.line(c("\tThis ", report.type, " was generated on ", format(Sys.time(), "%Y-%m-%d"), " by ",
-			"<a href=\"http://muReportR.org/\">muReportR</a> version ",
+			"<a href=\"https://github.com/demuellae/muReportR/\">muReportR</a> version ",
 			paste(as.character(utils::packageVersion("muReportR")), collapse = "."), "."), report@fname)
 	write.line("\t</div>", report@fname)
 	write.line("\t<div id=\"validlogo\">", report@fname)
@@ -188,7 +188,7 @@ initializeReports <- function(reportDir, configDir = "_config", logo=system.file
 	}
 	## Copy configuration files
 	cfiles <- list.files(system.file(file.path("extdata", "reportFiles"), package = "muReportR", mustWork = TRUE))
-	cfiles <- system.file(file.path("extdata", cfiles), package = "muReportR", mustWork = TRUE)
+	cfiles <- system.file(file.path("extdata", "reportFiles", cfiles), package = "muReportR", mustWork = TRUE)
 	res <- all(file.copy(cfiles, dname))
 	res <- res && file.copy(logo, file.path(dname, "logo.png"))
 	return()
@@ -254,7 +254,7 @@ setMethod("initialize", "Report",
 		## Read or generate report-specific directory names
 		dir.configuration <- dirs["configuration"]
 		if (is.na(dir.configuration)) {
-			dir.configuration <- "configuration"
+			dir.configuration <- "_config"
 		}
 		if (!is.valid.relative(dir.configuration)) {
 			stop("dir.configuration is invalid")
@@ -1237,7 +1237,7 @@ createReport <- function(fname, title, page.title = "muReportR report", authors 
 		}
 		dnames <- names(dirs)
 		if (is.null(dnames)) { dnames <- character(0) }
-		dnames <- intersect(dnames, c("configuration", "data", "pngs", "pdfs", "high"))
+		dnames <- intersect(dnames, c("_config", "data", "pngs", "pdfs", "high"))
 		if (length(dnames) != 0 && any(is.na(dirs[dnames]))) {
 			stop("missing values for dirs")
 		}

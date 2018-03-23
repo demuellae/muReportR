@@ -99,10 +99,9 @@ h1 {
 	font-family: 'Bookman Old Style', Palatino, serif;
 	margin-left: 155px;
 	text-align: center;
-	text-shadow: #C0C0C0 2px 2px;
 }
 h2 {
-	border-bottom: 4px double #0000C0;
+	border-bottom: 4px solid #C6C6C6;
 	color: black;
 	font-family: Georgia, Garamond, serif;
 	margin: 1.3em 0em 0.5em 0em;

@@ -12,6 +12,7 @@ Depends:
 Imports:
 Suggests:
 Collate:
+	'utils.R'
 	'Report-class.R'
     'Report-methods.R'
     'ReportPlot-class.R'
