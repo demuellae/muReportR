@@ -33,5 +33,5 @@ one is visible at any given moment.
   adding contents to an HTML report
 }
 \author{
-Yassen Assenov
+adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 }

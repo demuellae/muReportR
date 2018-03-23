@@ -1,3 +1,4 @@
+// adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 function toggleSection(sid) {
 	var elh = document.getElementById('hsection' + sid)
 	var eld = document.getElementById('section' + sid)

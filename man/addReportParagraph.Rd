@@ -38,5 +38,5 @@ addReportParagraph(report, txt)
 \code{\linkS4class{Report}} for other functions adding contents to an HTML report
 }
 \author{
-Yassen Assenov
+adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 }

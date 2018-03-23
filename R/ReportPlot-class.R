@@ -1,11 +1,3 @@
-########################################################################################################################
-## ReportPlot-class.R
-## created: 2012-04-16
-## creator: Yassen Assenov
-## ---------------------------------------------------------------------------------------------------------------------
-## ReportPlot class definition.
-########################################################################################################################
-
 ## C L A S S ###########################################################################################################
 
 #' ReportPlot Class
@@ -37,7 +29,7 @@
 #' @name ReportPlot-class
 #' @rdname ReportPlot-class
 #' @aliases initialize,ReportPlot-method
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @exportClass ReportPlot
 setClass("ReportPlot",
 	representation(fname = "character", width = "numeric", height = "numeric",

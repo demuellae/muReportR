@@ -6,7 +6,7 @@
 ## 
 ## @param value Value to be tested.
 ## @return \code{TRUE} if \code{values} is \code{TRUE} or \code{FALSE}, \code{FALSE} otherwise.
-## @author Yassen Assenov
+## @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 parameter.is.flag <- function(value) {
 	is.logical(value) && length(value) == 1 && (!is.na(value))
 }
@@ -20,7 +20,7 @@ parameter.is.flag <- function(value) {
 ## @param param.name Name of parameter or slot that is validated. This is used in the generation of failing message.
 ## @return Short message that encodes the result of the validation in the form of a \code{character}. It is either the
 ##         string \code{ok}, or a short phrase describing the divergence from the "single value assumption".
-## @author Yassen Assenov
+## @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 validate.single <- function(x, param.name = "x") {
 	if (is.null(x) || length(x) == 0) {
 		result <- paste("missing value for", param.name)
@@ -57,7 +57,7 @@ validate.single <- function(x, param.name = "x") {
 #' # Validate the current working directory exists
 #' validate.file(getwd(), FALSE)
 #' }
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @noRd
 validate.file <- function(file, is.file = TRUE, terminate = TRUE) {
 	if (!(is.character(file) && length(file) == 1 && (!is.na(file)))) {
@@ -100,7 +100,7 @@ validate.file <- function(file, is.file = TRUE, terminate = TRUE) {
 ## If there is a logger initialized, validates that the given directory exists.
 ##
 ## @param dname Name of directory to be validated.
-## @author Yassen Assenov
+## @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 validate.dir <- function(dname) {
 	validate.file(dname, is.file = FALSE)
 }
@@ -117,7 +117,7 @@ validate.dir <- function(dname) {
 ## @param indent Indentation of the text, given as number of \code{TAB} characters.
 ## @param append Flag indicating if the line is to be appended to the text file. If this is \code{FALSE}, the file's
 ##               contents are overwritten.
-## @author Yassen Assenov
+## @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 write.line <- function(txt, fname, indent = 0, append = TRUE) {
 	strprefix <- paste(rep("\t", times = indent), collapse = "")
 	cat(strprefix, paste0(txt, collapse = ""), "\n", file = fname, sep = "", append = append)
@@ -137,7 +137,7 @@ write.line <- function(txt, fname, indent = 0, append = TRUE) {
 #' x11(width = 5, height = 5)
 #' ggMsgPlot("Missing data")
 #' }
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 ggMsgPlot <- function(txt) {
 	if (!(is.character(txt) && length(txt) == 1 && (!is.na(txt)))) {

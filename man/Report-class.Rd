@@ -42,5 +42,5 @@ Handler of a generated HTML report. Reports are initialized using the function \
 }
 
 \author{
-Yassen Assenov
+adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 }

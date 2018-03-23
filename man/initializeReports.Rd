@@ -39,5 +39,5 @@ if (!initializeReports(reportDir)) {
 \code{\link{createReport}} for initializing an HTML report
 }
 \author{
-Yassen Assenov
+adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 }

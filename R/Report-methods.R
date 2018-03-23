@@ -1,11 +1,3 @@
-########################################################################################################################
-## Report-methods.R
-## created: 2012-05-08
-## creator: Yassen Assenov
-## ---------------------------------------------------------------------------------------------------------------------
-## Report class method definition.
-########################################################################################################################
-
 ## F U N C T I O N S ###################################################################################################
 
 #' Checks if the given strings are valid to be used as file names.
@@ -26,7 +18,7 @@ is.valid.fname <- function(fname) {
 #' @param dname Name of the file or directory.
 #' @return \code{TRUE} if \code{dname} meets the criteria for a file or directory to be easily referenced in an HTML
 #'         link, \code{FALSE} otherwise.
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @noRd
 is.valid.relative <- function(dname) {
 	if (!grepl("^[A-Za-z0-9/\\._-]+$", dname)) {
@@ -54,7 +46,7 @@ is.valid.relative <- function(dname) {
 #' @return                \code{logical} indicating if the creation was successful.
 #'
 #' @seealso \code{\link{dir.create}}
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @noRd
 create.path <- function(dname, accept.existing = TRUE, showWarnings = TRUE) {
 	if (file.exists(dname)) {
@@ -75,7 +67,7 @@ create.path <- function(dname, accept.existing = TRUE, showWarnings = TRUE) {
 #'
 #' @param report Report instance to close.
 #' @param rtype  Contents of the HTML file. It should be \code{"report"} or \code{"index"}.
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @noRd
 complete.report <- function(report, report.type = "report") {
 
@@ -163,7 +155,7 @@ setMethod("show", "Report",
 #' }
 #'
 #' @seealso \code{\link{createReport}} for initializing an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 initializeReports <- function(reportDir, configDir = "_config", logo=system.file(file.path("extdata", "logo.png"), package = "muReportR", mustWork = TRUE)) {
 	if (!(is.character(reportDir) && length(reportDir) == 1 && (!is.na(reportDir[1])))) {
@@ -365,7 +357,7 @@ setMethod("initialize", "Report",
 #' getReportDir(report, "data")
 #' }
 #' @seealso \code{\linkS4class{Report}} for functions adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 getReportDir <- function(report, dir = c("data", "images", "images_highres", "pdfs"), absolute = FALSE) {
 	if (!inherits(report, "Report")) {
@@ -417,7 +409,7 @@ getReportDir <- function(report, dir = c("data", "images", "images_highres", "pd
 #' report <- addReportSection(report, "Introduction", "This is how it's done.")
 #' }
 #' @seealso \code{\linkS4class{Report}} for other functions adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 addReportSection <- function(report, title, description, level = 1L, collapsed = FALSE) {
 	if (!inherits(report, "Report")) {
@@ -498,7 +490,7 @@ addReportSection <- function(report, title, description, level = 1L, collapsed =
 #' addReportParagraph(report, txt)
 #' }
 #' @seealso \code{\linkS4class{Report}} for other functions adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 addReportParagraph <- function(report, txt, pClass = NULL) {
 	if (!inherits(report, "Report")) {
@@ -556,7 +548,7 @@ addReportParagraph <- function(report, txt, pClass = NULL) {
 #' addReportList(report, recipe, type="o")
 #' }
 #' @seealso \code{\linkS4class{Report}} for other functions adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 addReportList <- function(report, txt, type = "u") {
 	if (!inherits(report, "Report")) {
@@ -629,7 +621,7 @@ addReportList <- function(report, txt, type = "u") {
 #'
 #' @seealso \code{\link{addReportTables}} for adding a listing of tables; \code{\linkS4class{Report}} for other functions
 #'   adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 addReportTable <- function(report, tdata, row.names = TRUE, first.col.header = FALSE, indent = 0,
 	tag.attrs = c("class" = "tabdata"), thead = NULL, tcaption = NULL, na = "<span class=\"disabled\">n/a</span>") {
@@ -743,7 +735,7 @@ addReportTable <- function(report, tdata, row.names = TRUE, first.col.header = F
 #' @return List of observed values per element; an empty list if no variation is observed (\code{elements} if of length
 #'         one). In case the number of variable elements does not match \code{settings.count}, the return value is
 #'         \code{character} containing an error message.
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @noRd
 getReportElementValues <- function(elements, settings.count) {
 	element.count <- range(sapply(elements, length))
@@ -778,7 +770,7 @@ getReportElementValues <- function(elements, settings.count) {
 #' @param indent            Indentation, in number of tabulation characters, of the <table> tag.
 #' @return One-element \code{character} containing the generated HTML code for the settings table; \code{NULL} if
 #'         \code{setting.names} is incomplete, that is, not all provided \code{element.values} have descriptions.
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @noRd
 createReportSettingsTable <- function(type, n, element.values, setting.names, selected.elements, indent = 1L) {
 	updatefun <- ifelse(type == "fig", "updateFigure", "updateTable")
@@ -842,7 +834,7 @@ createReportSettingsTable <- function(type, n, element.values, setting.names, se
 #'
 #' @seealso \code{\link{addReportTable}} for adding a single table to a report; \code{\linkS4class{Report}} for other
 #'   functions adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 addReportTables <- function(report, tables, setting.names, selected.table = 1L, indent = 2L, ...) {
 	
@@ -923,7 +915,7 @@ addReportTables <- function(report, tables, setting.names, selected.table = 1L, 
 #'
 #' @seealso \code{\link{addReportTables}} for adding a listing of tables; \code{\linkS4class{Report}} for other functions
 #'   adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 addReportFigure <- function(report, description, repPlots, setting.names = list(), selected.image = as.integer(1)) {
 
@@ -1066,7 +1058,7 @@ addReportFigure <- function(report, description, repPlots, setting.names = list(
 #' }
 #' @seealso \code{\link{getReportReference}} for adding citations in the report's text; \code{\linkS4class{Report}} for
 #'   other functions adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 addReportReference <- function(report, txt) {
 	if (!inherits(report, "Report")) {
@@ -1101,7 +1093,7 @@ addReportReference <- function(report, txt) {
 #' }
 #' @seealso \code{\link{addReportReference}} for adding a reference item to a report; \code{\linkS4class{Report}} for
 #'   other functions adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 getReportReference <- function(report, txt) {
 	if (!inherits(report, "Report")) {
@@ -1218,7 +1210,7 @@ setMethod("off", "Report",
 #' report <- createReport("example.html", "Example", init.configuration = TRUE)
 #' }
 #' @seealso \code{\linkS4class{Report}} for functions adding contents to an HTML report
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 createReport <- function(fname, title, page.title = "muReportR report", authors = NULL, dirs = NULL, init.configuration = FALSE) {
 	if (!(is.character(fname) && length(fname) == 1 && (!is.na(fname[1])))) {

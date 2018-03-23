@@ -34,5 +34,5 @@ Generates HTML code for a listing of tables (of which only one is visible at any
   functions adding contents to an HTML report
 }
 \author{
-Yassen Assenov
+adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 }

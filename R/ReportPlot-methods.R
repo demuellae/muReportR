@@ -1,11 +1,3 @@
-########################################################################################################################
-## ReportPlot-methods.R
-## created: 2012-04-16
-## creator: Yassen Assenov
-## ---------------------------------------------------------------------------------------------------------------------
-## ReportPlot class definition.
-########################################################################################################################
-
 ## M E T H O D S #######################################################################################################
 
 setValidity("ReportPlot",
@@ -89,7 +81,7 @@ setMethod("initialize", "ReportPlot",
 #' plot.image <- createReportPlot('scatterplot', high.png = 200)
 #' getReportPlotFiles(plot.image)
 #' }
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 getReportPlotFiles <- function(repPlot) {
 	if (!inherits(repPlot, "ReportPlot")) {
@@ -208,7 +200,7 @@ setMethod("off", "ReportPlot",
 #' can consist of the following symbols only: Latin letters, digits, dot (\code{.}), dash (\code{-}) and underline
 #' (\code{_}). The name must not include paths, that is, slash (\code{/}) or backslash (\code{\\}) cannot be used.
 #'
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
 createReportPlot <- function(fname, report = NULL, width = 7, height = 7, create.pdf = TRUE, low.png = 100L,
 	high.png = 0L) {

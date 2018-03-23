@@ -81,5 +81,5 @@ report <- createReport("example.html", "Example", init.configuration = TRUE)
 \code{\linkS4class{Report}} for functions adding contents to an HTML report
 }
 \author{
-Yassen Assenov
+adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 }

@@ -1,11 +1,3 @@
-########################################################################################################################
-## Report-class.R
-## created: 2012-05-08
-## creator: Yassen Assenov
-## ---------------------------------------------------------------------------------------------------------------------
-## Report class definition.
-########################################################################################################################
-
 ## C L A S S ###########################################################################################################
 
 #' Report Class
@@ -44,7 +36,7 @@
 #' @name Report-class
 #' @rdname Report-class
 #' @aliases initialize,Report-method
-#' @author Yassen Assenov
+#' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @exportClass Report
 setClass("Report",
 	representation(fname = "character",
