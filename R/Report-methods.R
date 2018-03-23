@@ -333,7 +333,10 @@ setMethod("initialize", "Report",
 		wline("</head>\n")
 		wline(c("<body style=\"background:url(", dir.configuration, "logo.png) no-repeat 5px 25px;\">\n"))
 		wline(c("<br />")) #whitespace
+		wline(c("<br />")) #whitespace
 		wline(c("<h1>", title, "</h1>\n"))
+		wline(c("<br />")) #whitespace
+		wline(c("<br />")) #whitespace
 		.Object
 	}
 )

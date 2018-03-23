@@ -51,14 +51,14 @@ a {
 	text-decoration: none;
 }
 :link:hover {
-	background-color: #F0F0FF;
+	background-color: #94D3D6;
 }
 :link:hover img {
 	background-color: #FFFFFF;
 }
 body {
 	background-color: #FFFFFF;
-	font-family: Verdana, Arial, sans-serif;
+	font-family: Palatino, Palatino Linotype, Palatino LT STD, Book Antiqua, Georgia, serif;
 	width: 880px;
 }
 div.settings {
@@ -97,31 +97,32 @@ div.restrictedy {
 	overflow-y: scroll;
 }
 h1 {
-	font-family: 'Bookman Old Style', Palatino, serif;
+	font-family: Avant Garde, Avantgarde, Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+	color: #018D9D;
 	margin-left: 155px;
 	text-align: center;
 }
 h2 {
 	border-bottom: 4px solid #C6C6C6;
-	color: black;
-	font-family: Georgia, Garamond, serif;
+	color: #018D9D;
+	font-family: Avant Garde, Avantgarde, Century Gothic, CenturyGothic, AppleGothic, sans-serif;
 	margin: 1.3em 0em 0.5em 0em;
 }
 h3 {
-	color: black;
-	font-family: Georgia, Garamond, serif;
+	color: #018D9D;
+	font-family: Avant Garde, Avantgarde, Century Gothic, CenturyGothic, AppleGothic, sans-serif;
 	margin: 0.9em 0em 0em 0em;
 }
 h4 {
-	color: black;
+	color: #018D9D;
 	margin: 0.7em 0em 0em 0em;
 }
 .collapsed:hover {
-	color: #54549B;
+	color: #94D3D6;
 	cursor: pointer;
 }
 .expanded:hover {
-	color: #54549B;
+	color: #94D3D6;
 	cursor: pointer;
 }
 img {
@@ -136,10 +137,10 @@ p {
 	text-align: justify;
 }
 p a {
-	color: blue;
+	color: #676D8D;
 }
 p a:hover {
-	background-color: #F0F0FF;
+	background-color: #94D3D6;
 }
 p.caption {
 	text-align: center;
@@ -232,7 +233,7 @@ table.tabsettings tr td {
 	text-align: left;
 }
 table.tabsettings tr td:first-child {
-	background-color: #F0F0FF;
+	background-color: #94D3D6;
 	font-weight: normal;
 	text-align: right;
 }
@@ -257,7 +258,7 @@ table.tabdata tr td.selected {
 	background-color: #FFFFE0;
 }
 table.tabdata tr td.header {
-	background-color: #F0F0FF;
+	background-color: #94D3D6;
 	font-weight: normal;
 	text-align: center;
 }
@@ -268,7 +269,7 @@ table.tindex {
 	font-weight: bold;
 }
 table.tindex thead {
-	background-color: #F0F0FF;
+	background-color: #94D3D6;
 }
 table.tindex thead th {
 	border-bottom: 1px solid black;
