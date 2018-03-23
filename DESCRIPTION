@@ -1,0 +1,13 @@
+Package: muReportR
+Title: muReportR
+Description: Generate HTML reports from R
+Authors@R: c(
+    person("Fabian", "Mueller", email = "fmueller@mpi-inf.mpg.de",
+    role = c("aut", "cre")))
+Date: 2018-03-22
+License: GPL-3
+Version: 0.1
+Depends:
+Imports:
+Suggests:
+Collate:
