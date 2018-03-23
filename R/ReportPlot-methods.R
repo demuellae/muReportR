@@ -287,7 +287,7 @@ setMethod("off", "ReportGgPlot",
 			if (obj@create.pdf) {
 				validate.dir(obj@dir.pdf)
 				fn <- file.path(obj@dir.pdf, paste(obj@fname, "pdf", sep = "."))
-				ggplot2::ggsave(fn,obj@ggp,width=obj@width,height=obj@height)
+				ggplot2::ggsave(fn,obj@ggp, width=obj@width, height=obj@height, useDingbats=FALSE)
 			}
 			if (obj@high.png > 0) {
 				validate.dir(obj@dir.png.high)
@@ -296,12 +296,12 @@ setMethod("off", "ReportGgPlot",
 					fname <- paste(fname, "_highres", sep = "")
 				}
 				fn <- file.path(obj@dir.png.high, paste(fname, "png", sep = "."))
-				ggplot2::ggsave(fn,obj@ggp,width=obj@width,height=obj@height,dpi=obj@high.png)
+				ggplot2::ggsave(fn,obj@ggp, width=obj@width, height=obj@height, dpi=obj@high.png, useDingbats=FALSE)
 			}
 			if (obj@low.png > 0) {
 				validate.dir(obj@dir.png.low)
 				fn <- file.path(obj@dir.png.low, paste(obj@fname, "png", sep = "."))
-				ggplot2::ggsave(fn,obj@ggp,width=obj@width,height=obj@height,dpi=obj@low.png)
+				ggplot2::ggsave(fn,obj@ggp, width=obj@width, height=obj@height, dpi=obj@low.png, useDingbats=FALSE)
 			}
 		}
 		if (handle.errors){
