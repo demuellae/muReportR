@@ -303,7 +303,7 @@ setMethod("initialize", "Report",
 			cfiles <- list.files(system.file(file.path("extdata", "reportFiles"), package = "muReportR", mustWork = TRUE))
 			cfiles <- system.file(file.path("extdata", "reportFiles", cfiles), package = "muReportR", mustWork = TRUE)
 			copySuccess <- all(file.copy(cfiles, dname))
-			logo <- system.file(file.path("extdata", "reportFiles", "logo.png"), package = "muReportR", mustWork = TRUE)
+			logo <- system.file(file.path("extdata", "logo.png"), package = "muReportR", mustWork = TRUE)
 			copySuccess <- copySuccess && file.copy(logo, file.path(dname, "logo.png"))
 
 			if (!copySuccess) {
