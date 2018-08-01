@@ -296,12 +296,12 @@ setMethod("off", "ReportGgPlot",
 					fname <- paste(fname, "_highres", sep = "")
 				}
 				fn <- file.path(obj@dir.png.high, paste(fname, "png", sep = "."))
-				ggplot2::ggsave(fn,obj@ggp, width=obj@width, height=obj@height, dpi=obj@high.png, useDingbats=FALSE)
+				ggplot2::ggsave(fn,obj@ggp, width=obj@width, height=obj@height, dpi=obj@high.png)
 			}
 			if (obj@low.png > 0) {
 				validate.dir(obj@dir.png.low)
 				fn <- file.path(obj@dir.png.low, paste(obj@fname, "png", sep = "."))
-				ggplot2::ggsave(fn,obj@ggp, width=obj@width, height=obj@height, dpi=obj@low.png, useDingbats=FALSE)
+				ggplot2::ggsave(fn,obj@ggp, width=obj@width, height=obj@height, dpi=obj@low.png)
 			}
 		}
 		if (handle.errors){
