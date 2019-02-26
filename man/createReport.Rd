@@ -4,8 +4,9 @@
 \alias{createReport}
 \title{createReport}
 \usage{
-createReport(fname, title, page.title = "muReportR report", authors = NULL,
-  dirs = NULL, init.configuration = FALSE)
+createReport(fname, title, page.title = "muReportR report",
+  authors = NULL, dirs = NULL, init.configuration = FALSE,
+  theme = "thesis")
 }
 \arguments{
 \item{fname}{Single-element \code{character} vector denoting the name of the file to contain the HTML
@@ -31,6 +32,9 @@ HTML report. If such configuration files already exist, they will be overwritten
 aforementioned files can be shared by multiple reports, it is recommended that the
 configuration is initialized using the method \code{\link{initializeReports}}, instead
 of setting this flag to \code{TRUE}.}
+
+\item{theme}{character specifying the theme to be used for the report files. Currently only \code{"thesis"}
+(default) and \code{"stanford"} are supported.}
 }
 \value{
 Newly created \code{\linkS4class{Report}} object.

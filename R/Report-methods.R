@@ -143,6 +143,8 @@ setMethod("show", "Report",
 #'                          \code{\link{createReport}} function for more details. This method creates the directory and
 #'                          copies configuration files that define cascading style sheet (CSS) definitions and
 #'                          Javascript functions used by the HTML reports.
+#' @param theme             character specifying the theme to be used for the report files. Currently only \code{"thesis"}
+#'                          (default) and \code{"stanford"} are supported.
 #' @return \code{TRUE} if the report directory was successfully created and the configuration files were copied to the
 #'         specified location; \code{FALSE} otherwise.
 #'
@@ -157,7 +159,7 @@ setMethod("show", "Report",
 #' @seealso \code{\link{createReport}} for initializing an HTML report
 #' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
-initializeReports <- function(reportDir, configDir = "_config", logo=system.file(file.path("extdata", "logo.png"), package = "muReportR", mustWork = TRUE)) {
+initializeReports <- function(reportDir, configDir = "_config", theme="thesis") {
 	if (!(is.character(reportDir) && length(reportDir) == 1 && (!is.na(reportDir[1])))) {
 		stop("invalid value for reportDir")
 	}
@@ -166,6 +168,9 @@ initializeReports <- function(reportDir, configDir = "_config", logo=system.file
 	}
 	if (!is.valid.relative(configDir)) {
 		stop("invalid value for configDir")
+	}
+	if (!is.character(theme) || !is.element(theme, c("thesis", "stanford"))){
+		stop("invalid value for theme")
 	}
 	## Remove trailing slash or backslash in reportDir (if it exists)
 	reportDir <- sub("^(.+)[/\\\\]$", "\\1", reportDir[1])
@@ -179,11 +184,12 @@ initializeReports <- function(reportDir, configDir = "_config", logo=system.file
 		return(FALSE)
 	}
 	## Copy configuration files
-	cfiles <- list.files(system.file(file.path("extdata", "reportFiles"), package = "muReportR", mustWork = TRUE))
-	cfiles <- system.file(file.path("extdata", "reportFiles", cfiles), package = "muReportR", mustWork = TRUE)
+	themeDir <- paste0("reportFiles_", theme)
+	cfiles <- list.files(system.file(file.path("extdata", themeDir), package = "muReportR", mustWork = TRUE))
+	cfiles <- system.file(file.path("extdata", themeDir, cfiles), package = "muReportR", mustWork = TRUE)
 	res <- all(file.copy(cfiles, dname))
-	res <- res && file.copy(logo, file.path(dname, "logo.png"))
-	return()
+	# res <- res && file.copy(logo, file.path(dname, "logo.png"))
+	return(res)
 }
 
 ## M E T H O D S #######################################################################################################
@@ -241,7 +247,7 @@ setValidity("Report",
 ########################################################################################################################
 
 setMethod("initialize", "Report",
-	function(.Object, fname, title, page.title, authors, dirs, init.configuration) {
+	function(.Object, fname, title, page.title, authors, dirs, init.configuration, theme) {
 		.Object@fname <- normalizePath(fname, mustWork = FALSE)
 		## Read or generate report-specific directory names
 		dir.configuration <- dirs["configuration"]
@@ -278,6 +284,9 @@ setMethod("initialize", "Report",
 		} else {
 			authors <- NULL
 		}
+		if (!is.character(theme) || !is.element(theme, c("thesis", "stanford"))){
+			stop("invalid value for theme")
+		}
 
 		## Create directories
 		dnames <- file.path(dirname(.Object@fname), c(.Object@dir.data, .Object@dir.pngs, .Object@dir.pdfs, .Object@dir.high))
@@ -300,11 +309,10 @@ setMethod("initialize", "Report",
 				stop(paste("directory", dname, "cannot be created"))
 			}
 			## Copy configuration files
-			cfiles <- list.files(system.file(file.path("extdata", "reportFiles"), package = "muReportR", mustWork = TRUE))
-			cfiles <- system.file(file.path("extdata", "reportFiles", cfiles), package = "muReportR", mustWork = TRUE)
+			themeDir <- paste0("reportFiles_", theme)
+			cfiles <- list.files(system.file(file.path("extdata", themeDir), package = "muReportR", mustWork = TRUE))
+			cfiles <- system.file(file.path("extdata", themeDir, cfiles), package = "muReportR", mustWork = TRUE)
 			copySuccess <- all(file.copy(cfiles, dname))
-			logo <- system.file(file.path("extdata", "logo.png"), package = "muReportR", mustWork = TRUE)
-			copySuccess <- copySuccess && file.copy(logo, file.path(dname, "logo.png"))
 
 			if (!copySuccess) {
 				stop(paste("configuration could not be initialized in", dname))
@@ -1172,6 +1180,8 @@ setMethod("off", "Report",
 #'                           aforementioned files can be shared by multiple reports, it is recommended that the
 #'                           configuration is initialized using the method \code{\link{initializeReports}}, instead
 #'                           of setting this flag to \code{TRUE}.
+#' @param theme              character specifying the theme to be used for the report files. Currently only \code{"thesis"}
+#'                           (default) and \code{"stanford"} are supported.
 #' @return Newly created \code{\linkS4class{Report}} object.
 #'
 #' @details
@@ -1215,7 +1225,7 @@ setMethod("off", "Report",
 #' @seealso \code{\linkS4class{Report}} for functions adding contents to an HTML report
 #' @author adapted by Fabian Mueller from RnBeads code by Yassen Assenov
 #' @export
-createReport <- function(fname, title, page.title = "muReportR report", authors = NULL, dirs = NULL, init.configuration = FALSE) {
+createReport <- function(fname, title, page.title = "muReportR report", authors = NULL, dirs = NULL, init.configuration = FALSE, theme = "thesis") {
 	if (!(is.character(fname) && length(fname) == 1 && (!is.na(fname[1])))) {
 		stop("invalid value for fname")
 	}
@@ -1244,5 +1254,5 @@ createReport <- function(fname, title, page.title = "muReportR report", authors 
 	if (!parameter.is.flag(init.configuration)) {
 		stop("invalid value for init.configuration; expected TRUE or FALSE")
 	}
-	new("Report", fname, title, page.title, authors, dirs, init.configuration[1])
+	new("Report", fname, title, page.title, authors, dirs, init.configuration[1], theme)
 }

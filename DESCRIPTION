@@ -6,9 +6,9 @@ Authors@R: c(
     role = c("aut")),
     person("Fabian", "Mueller", email = "fmueller@mpi-inf.mpg.de",
     role = c("aut", "cre")))
-Date: 2018-03-22
+Date: 2019-02-26
 License: GPL-3
-Version: 0.1
+Version: 0.2
 Depends:
 	ggplot2
 Imports:
@@ -19,4 +19,4 @@ Collate:
     'Report-methods.R'
     'ReportPlot-class.R'
     'ReportPlot-methods.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

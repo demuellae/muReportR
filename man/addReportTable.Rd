@@ -4,9 +4,10 @@
 \alias{addReportTable}
 \title{addReportTable}
 \usage{
-addReportTable(report, tdata, row.names = TRUE, first.col.header = FALSE,
-  indent = 0, tag.attrs = c(class = "tabdata"), thead = NULL,
-  tcaption = NULL, na = "<span class=\\"disabled\\">n/a</span>")
+addReportTable(report, tdata, row.names = TRUE,
+  first.col.header = FALSE, indent = 0, tag.attrs = c(class =
+  "tabdata"), thead = NULL, tcaption = NULL,
+  na = "<span class=\\"disabled\\">n/a</span>")
 }
 \arguments{
 \item{report}{Report to write the text to.}

@@ -4,7 +4,8 @@
 \alias{addReportSection}
 \title{addReportSection}
 \usage{
-addReportSection(report, title, description, level = 1L, collapsed = FALSE)
+addReportSection(report, title, description, level = 1L,
+  collapsed = FALSE)
 }
 \arguments{
 \item{report}{Report to write the text to.}

@@ -4,9 +4,7 @@
 \alias{initializeReports}
 \title{initializeReports}
 \usage{
-initializeReports(reportDir, configDir = "_config",
-  logo = system.file(file.path("extdata", "logo.png"), package = "muReportR",
-  mustWork = TRUE))
+initializeReports(reportDir, configDir = "_config", theme = "thesis")
 }
 \arguments{
 \item{reportDir}{Directory to host report files. This must be a \code{character} of length one that specifies
@@ -18,6 +16,9 @@ Also, strong restrictions apply to the path name. See the description of the
 \code{\link{createReport}} function for more details. This method creates the directory and
 copies configuration files that define cascading style sheet (CSS) definitions and
 Javascript functions used by the HTML reports.}
+
+\item{theme}{character specifying the theme to be used for the report files. Currently only \code{"thesis"}
+(default) and \code{"stanford"} are supported.}
 }
 \value{
 \code{TRUE} if the report directory was successfully created and the configuration files were copied to the
