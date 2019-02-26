@@ -118,11 +118,11 @@ h4 {
 	margin: 0.7em 0em 0em 0em;
 }
 .collapsed:hover {
-	color: #F9F6EF;
+	color: #d2c295;
 	cursor: pointer;
 }
 .expanded:hover {
-	color: #F9F6EF;
+	color: #d2c295;
 	cursor: pointer;
 }
 img {
@@ -140,7 +140,7 @@ p a {
 	color: #dad7cb;
 }
 p a:hover {
-	background-color: #F9F6EF;
+	background-color: #d2c295;
 }
 p.caption {
 	text-align: center;
