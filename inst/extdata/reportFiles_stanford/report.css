@@ -259,7 +259,7 @@ table.tabdata tr td.selected {
 }
 table.tabdata tr td.header {
 	background-color: #F9F6EF;
-	font-weight: normal;
+	font-weight: bold;
 	text-align: center;
 }
 table.tindex {
