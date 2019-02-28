@@ -246,7 +246,7 @@ table.tabdata {
 }
 table.tabdata tr td {
 	border: 1px solid #A0A0A0;
-	font-weight: bold;
+	font-weight: normal;
 	padding: 0.1em 0.2em 0.1em 0.2em;
 	text-align: right;
 }
