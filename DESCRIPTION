@@ -6,14 +6,15 @@ Authors@R: c(
     role = c("aut")),
     person("Fabian", "Mueller", email = "fmueller@mpi-inf.mpg.de",
     role = c("aut", "cre")))
-Date: 2019-02-26
+Date: 2019-06-06
+Version: 0.3
 License: GPL-3
-Version: 0.2
-Depends:
-	ggplot2
+Encoding: UTF-8
 Imports:
+	ggplot2
 Suggests:
 Collate:
+    'muReportR.R'
 	'utils.R'
 	'Report-class.R'
     'Report-methods.R'
