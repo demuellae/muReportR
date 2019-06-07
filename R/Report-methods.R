@@ -54,11 +54,11 @@ create.path <- function(dname, accept.existing = TRUE, showWarnings = TRUE) {
 			if (file.info(dname)[1, "isdir"]) {
 				## TODO: Should invisible files also be considered?
 				res <- length(dir(dname)) == 0
-				if (!res) warning(paste0("Directory '", dname, "' already exists and is non-empty"))
+				if (showWarnings && !res) warning(paste0("Directory '", dname, "' already exists and is non-empty"))
 				return(res)
 			}
 		}
-		warning(paste0("Directory '", dname, "' already exists"))
+		if (showWarnings) warning(paste0("Directory '", dname, "' already exists"))
 		return(FALSE)
 	}
 	return(dir.create(dname, showWarnings = showWarnings, recursive = TRUE))
