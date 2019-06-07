@@ -58,6 +58,7 @@ create.path <- function(dname, accept.existing = TRUE, showWarnings = TRUE) {
 				return(res)
 			}
 		}
+		warning(paste0("Directory '", dname, "' already exists"))
 		return(FALSE)
 	}
 	return(dir.create(dname, showWarnings = showWarnings, recursive = TRUE))
