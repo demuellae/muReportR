@@ -192,7 +192,7 @@ table.pipeline td {
     padding: 0px 0px 0px 0px;
 }
 table.pipeline td div {
-	background: linear-gradient(to right, rgba(0, 0, 192, 0.2), rgba(0, 0, 192, 0.2), rgba(0, 0, 192, 0.4));
+	background: linear-gradient(to right, rgba(210, 194, 149, 0.2), rgba(210, 194, 149, 0.2), rgba(210, 194, 149, 0.4));
 	border: 2px solid #544948;
 	border-radius: 1.5em;
 	height: 100px;
