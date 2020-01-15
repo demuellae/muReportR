@@ -192,7 +192,7 @@ table.pipeline td {
     padding: 0px 0px 0px 0px;
 }
 table.pipeline td div {
-	background: linear-gradient(to right, rgba(210, 194, 149, 0.2), rgba(210, 194, 149, 0.2), rgba(210, 194, 149, 0.4));
+	background: linear-gradient(to right, rgba(210, 194, 149, 0.6), rgba(210, 194, 149, 0.6), rgba(210, 194, 149, 0.9));
 	border: 2px solid #544948;
 	border-radius: 1.5em;
 	height: 100px;
@@ -206,8 +206,8 @@ table.pipeline td a {
 	text-decoration: none;
 }
 table.pipeline td a div:hover {
-	background: linear-gradient(to right, rgba(192, 192, 0, 0.25), rgba(192, 192, 0, 0.25), rgba(192, 192, 0, 0.45));
-	color: #175e54;
+	background: linear-gradient(to right, rgba(199, 209, 197, 0.6), rgba(199, 209, 197, 0.6), rgba(199, 209, 197, 0.9));
+	color: #8c1515;
 }
 table.pipeline tr:first-child td div {
 	margin-top: 0px;
